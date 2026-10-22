@@ -1,0 +1,11 @@
+name: nd2_splitter-env
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - pip=26.2
+  - python=3.12
+  - pip:
+    - "tifffile==2026.9.20"
+    - "bffile==0.1.1"
+    - "loguru==0.7.3"
