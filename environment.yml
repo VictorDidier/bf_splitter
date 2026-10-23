@@ -1,4 +1,4 @@
-name: nd2_splitter-env
+name: bf_splitter-env
 channels:
   - conda-forge
   - bioconda
@@ -9,3 +9,4 @@ dependencies:
     - "tifffile==2026.9.20"
     - "bffile==0.1.1"
     - "loguru==0.7.3"
+    - "imagecodecs==2026.3.6"

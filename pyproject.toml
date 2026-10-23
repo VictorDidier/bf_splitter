@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0","wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mito-annotator"
+name = "bf_splitter"
 dynamic = ["version"]
-authors = [{name = "Victor Perez", email = "perez-meza@bioquant.uni-heidelberg.de"}]
+authors = [{name = "Victor Perez", email = "vdpm85@hotmail.com"}]
 
 license = {text = "BSD-3-Clause"}
-description = "GUI tool to annotate phases on cell mitosis images"
+description = "bioformat _splitter is a cli tool to split multi-series files into various single series files"
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3.12",
@@ -18,53 +18,36 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "numpy>=2.5.3",
-    "pandas>=3.0.5",
-    "bffile>=0.1.1",
-    "PyQt6>=6.11.0",
-    "pyqtgraph>=0.14.0"
+    "tifffile==2026.9.20",
+    "bffile==0.1.1",
+    "loguru==0.7.3",
+    "imagecodecs==2026.3.6"
     ]
 
 keywords = [
-    "annotation",
-    "image annotation",
-    "mitosis",
-    "cell cycle",
-    "prophase",
-    "prometaphase",
-    "metaphase",
-    "anaphase",
-    "telophase",
-    "immunofluorescence",
-    "fluorescence microscopy"
+    "bio-formats",
+    "bioformats",
+    "ome.tif",
+    "ome",
+    "multi-series",
+    "split files"
 ]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-[tool.setuptools.package-data]
-mito_annotator = ["icons/*"]
 
 [tool.setuptools.dynamic]
-version = { attr = "mito_annotator.version.__version__" }
+version = { attr = "bf_splitter.version.__version__" }
 
 [project.optional-dependencies]
-desktop-shortcut = ["pyshortcuts>=1.9",
-                    "pywin32>=306; sys_platform == 'win32'"
-                    ]
+verifier = ["pandas==3.0.6",
+            "dask==2026.8.0"
+            ]
 
 [project.scripts]
-mito-annotator = "mito_annotator.app:main"
-mito-annotator-create-shortcut = "mito_annotator.create_shortcut:main"
-
-
-[project.gui-scripts]
-mito-annotator-gui = "mito_annotator.app:main"
-
+split-series = "bf_splitter.series_splitter:main"
 
 
 [project.urls]
-Homepage = "https://bwgit.de/hd/cos/Nikon-Imaging-Center/analysis-pipelines/mitoevents/mito-annotator"
+Homepage = "https://github.com/VictorDidier/bf_splitter"

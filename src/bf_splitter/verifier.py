@@ -32,11 +32,14 @@ def get_args():
     args=parser.parse_args()
     return args
 
-def sum_differences(ima,imb):
-    bfa=bfffile.BioFile()
-    bfb=bfffile.BioFile()
+def sum_differences(A,B):
+    bfa=bfffile.BioFile(A)
+    bfb=bfffile.BioFile(B)
+    bfa.open()
+    bfb.open()
     lza=bfa.to_dask(series=0,resolution=0)
-    lzb=
+    lzb=bfb.to_dask(series=0,resolution=0)
+    result=()
 
 
 
