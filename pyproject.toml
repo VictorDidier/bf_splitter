@@ -9,7 +9,7 @@ authors = [{name = "Victor Perez", email = "vdpm85@hotmail.com"}]
 
 license = {text = "BSD-3-Clause"}
 description = "bioformat _splitter is a cli tool to split multi-series files into various single series files"
-readme = "README.md"
+
 classifiers = [
     "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",

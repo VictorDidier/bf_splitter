@@ -24,7 +24,7 @@ def get_args():
     parser.add_argument('-fn',
                         '--output_file_name',
                         required=False,
-                        default="verification_report"
+                        default="verification_report",
                         type=str,
                         help='absolute path of the directory where the ome.tif files will be written'
                         )
@@ -37,14 +37,16 @@ def sum_differences(A,B):
     bfb=bfffile.BioFile(B)
     bfa.open()
     bfb.open()
-    lza=bfa.to_dask(series=0,resolution=0)
-    lzb=bfb.to_dask(series=0,resolution=0)
-    result=()
+    #lza=bfa.to_dask(series=0,resolution=0)
+    #lzb=bfb.to_dask(series=0,resolution=0)
+    #result=()
+    bfa.close()
+    bfb.close()
 
 
 
-def main():
-    args=get_args()
-    input_file=args.input_table
-    table=pd.read_csv(input_file)
+#def main():
+#    args=get_args()
+#   input_file=args.input_table
+#    table=pd.read_csv(input_file)
     
