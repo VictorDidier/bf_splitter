@@ -36,6 +36,4 @@ WORKDIR /app
 # Copy contents of the folder to the working directory
 COPY src src
 COPY pyproject.toml .
-COPY LICENSE.txt .
-COPY README.md .
 RUN pip install --no-cache-dir .
