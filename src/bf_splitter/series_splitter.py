@@ -57,9 +57,19 @@ def get_args():
                         type=str,
                         default="processes",
                         choices={"threads","processes"},
-                        help="""Integer number that specifies how many series will be
-                            extracted in parallel.If not specified the default behaviour is
-                            to extract the series sequentially.
+                        help="""Select the concurrency model for processing the elements of 
+                        your selected batch_size.
+                        """
+                        )
+
+    parser.add_argument('-series',
+                        '--series_number',
+                        required=False,
+                        type=int,
+                        default=None,
+                        help="""If a specific series number is provided here, then
+                            only that series will be extracted. This argument will override
+                            the batch_size and concurrency_model arguments.
                             """
                         )
 
@@ -163,6 +173,7 @@ def main():
     batch_size=args.batch_size
     compression=args.compression_algorithm
     concurrency=args.concurrency_model
+    series_number=args.series_number
 
     outdir_bf=outdir / "BrightField"
     outdir_flu=outdir / "Fluorescence"
@@ -176,41 +187,37 @@ def main():
     no_of_series=metadata["series_count"]
     logger.info(f"COMMENCING EXTRACTION OF SERIES FROM: {input_image}")
     logger.info(f"NO. OF SERIES TO EXTRACT: {no_of_series}")
-    if batch_size:
+
+    if isinstance(series_number,int):
+        logger.info(f"EXTRACTION METHOD: SINGLE SERIES")
+    elif batch_size:
         logger.info(f"EXTRACTION METHOD: PARALLEL WITH BATCH-SIZE-{batch_size}")
     else:
-        logger.info("EXTRACTION METHOD: SEQUENTIAL")
+        print(series_number)
+        logger.info("EXTRACTION METHOD: ALL SERIES SEQUENTIAL")
 
     process_counter=0
     status=[]
-    if batch_size:
+
+    if isinstance(series_number,int):
+        s=series_number
+        logger.info(f"EXTRACTING SERIES(ID): {s}")
+        result=process_series(input_image,metadata["ome"],s,outdir_bf,outdir_flu,compression)
+        logger.info(f"PROCESSED SERIES: {s}")
+        status.append(result)#result=(series_id,success= True or False)
+
+    elif batch_size:
+
         series_batches=[list(element) for element in batched(range(no_of_series),batch_size)]
         for current_batch in series_batches:
             process_counter+=len(current_batch)
             logger.info(f"EXTRACTING SERIES(ID): {current_batch}")
             split_args=[input_image,metadata["ome"],current_batch,outdir_bf,outdir_flu,compression]
-
             if concurrency=="threads":
                 result=as_threads(*split_args)
             elif concurrency=="processes":
                 result=as_processes(*split_args)
-            
             status.extend(result)#result=(series_id,success= True or False)
-            """
-            with Pool() as pool:
-                
-                func_args=zip(repeat(input_image),
-                              repeat(metadata["ome"]),
-                              s,
-                              repeat(outdir_bf),
-                              repeat(outdir_flu),
-                              repeat(compression)
-                              )
-                result=pool.starmap(process_series,func_args)
-                status.extend(result)#result=(series_id,success= True or False)
-                """
-                
-
             logger.info(f"PROCESSED SERIES: {process_counter} out of {no_of_series}")
 
     else:
